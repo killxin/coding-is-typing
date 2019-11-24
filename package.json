@@ -14,14 +14,14 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-        "commands": [
-            {
-                "title": "Enable CodeTyping",
-                "command": "codeTyping.start",
-                "category": "Coding is typing"
-            }
-        ]
-    },
+		"commands": [
+			{
+				"title": "Enable CodeTyping",
+				"command": "codeTyping.start",
+				"category": "Coding is typing"
+			}
+		]
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
@@ -40,5 +40,6 @@
 		"tslint": "^5.20.0",
 		"vscode-test": "^1.2.2",
 		"monaco-editor": "^0.18.1"
-	}
+	},
+	"dependencies": {}
 }

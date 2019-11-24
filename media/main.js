@@ -112,17 +112,3 @@ function _updatePos(event){
 	}
 	return undefined;
 }
-
-// require.config({ paths: { 'vs': 'node_modules/monaco-editor/min/vs' }});
-// require(['vs/editor/editor.main'], function() {
-// 	console.log('xxxx');
-// 	var editor = monaco.editor.create(document.getElementById('container'), {
-// 		value: [
-// 			'function x() {',
-// 			'\tconsole.log("Hello world!");',
-// 			'}'
-// 		].join('\n'),
-// 		language: 'javascript'
-// 	});
-// });
-// console.log('yyyy');
