@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <!--
+                Use a content security policy to only allow loading images from https or from our extension directory,
+				and only allow scripts that have a specific nonce.
+				-->
+				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src file: data: https:; script-src file:; style-src 'unsafe-inline' file: https:;">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>coding is typing</title>
+            </head>
+            <body>
+                <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
+				<script src="node_modules/monaco-editor/min/vs/loader.js"></script>
+                <script src="media/main.js"></script>
+            </body>
+            </html>
