@@ -88,17 +88,20 @@ export class CodeTypingPanel {
         const html = this._getHtmlForWebview(webview);
 		webview.html = html;
 		const extensionUri = webview.asWebviewUri(vscode.Uri.file(this._extensionPath)) + '';
-		var languageId = 'javascript';
-		var text = [
+		let languageId = 'javascript';
+		let text = [
 			'function x() {',
 			'\tconsole.log("Hello world!");',
 			'}'
 		].join('\n');
+		let fileName = "myTest.js";
 		let editor = vscode.window.activeTextEditor;
 		if(editor){
 			languageId = editor.document.languageId;
 			text = editor.document.getText().toString();
+			fileName = editor.document.fileName;
 		}
+		this._panel.title = fileName + '.ct';
 		webview.postMessage(
 			{command: 'config', data: 
 				{
