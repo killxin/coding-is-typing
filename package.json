@@ -1,8 +1,10 @@
 {
 	"name": "coding-is-typing",
-	"displayName": "coding_is_typing",
+	"displayName": "Coding is typing",
 	"description": "learn something by typing it",
 	"version": "0.0.1",
+	"publisher": "rhjiang",
+	"repository": "https://github.com/killxin/coding-is-typing",
 	"engines": {
 		"vscode": "^1.40.0"
 	},

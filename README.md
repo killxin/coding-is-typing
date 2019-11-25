@@ -13,7 +13,7 @@ A vscode extension to help increasing the coding (or typing) speed.
 
 ![demo](demo.gif)
 
-## Setup
+## Build from source
 
 - Open this example in VS Code 1.25+
 - `npm install`
