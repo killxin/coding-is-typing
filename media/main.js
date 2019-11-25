@@ -95,7 +95,7 @@ function _updatePos(event){
 	let curKey = curLine[curPos.column - 1];
 	console.log(key + '_' + curKey + '_' + curLine);
 	if(key === curKey) {
-		charCount++;
+		if(isCounting) charCount++;
 		if(curPos.column === curLine.length) {
 			let nextLineNum = curPos.lineNumber + 1;
 			let nextLine;
