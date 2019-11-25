@@ -70,17 +70,18 @@ export class CodeTypingPanel {
 		);
 
 		// Handle messages from the webview
-		// this._panel.webview.onDidReceiveMessage(
-		// 	message => {
-		// 		switch (message.command) {
-		// 			case 'alert':
-		// 				vscode.window.showErrorMessage(message.text);
-		// 				return;
-		// 		}
-		// 	},
-		// 	null,
-		// 	this._disposables
-		// );
+		this._panel.webview.onDidReceiveMessage(
+			message => {
+				switch (message.command) {
+					case 'counting':
+						let status = message.status;
+						vscode.window.setStatusBarMessage(status);
+						return;
+				}
+			},
+			null,
+			this._disposables
+		);
     }
     
     private _update() {
@@ -101,16 +102,13 @@ export class CodeTypingPanel {
 			text = editor.document.getText().toString();
 			fileName = editor.document.fileName;
 		}
-		this._panel.title = fileName + '.ct';
-		webview.postMessage(
-			{command: 'config', data: 
-				{
-					extensionUri: extensionUri,
-					text: text,
-					lang: languageId
-				}
-			}
-		);
+		this._panel.title = fileName.substring(fileName.lastIndexOf('/') + 1) + '.ct';
+		webview.postMessage({
+			command: 'config',
+			extensionUri: extensionUri,
+			text: text,
+			lang: languageId,
+		});
 	}
 
 	public dispose() {
@@ -133,14 +131,11 @@ export class CodeTypingPanel {
             path.join(this._extensionPath, 'node_modules', 'monaco-editor', 'min', 'vs', 'loader.js')
 		);
 		const monacoLoaderUri = webview.asWebviewUri(monacoLoaderPath);
-		const mainJSPath = vscode.Uri.file(
-			path.join(this._extensionPath, 'media', 'main.js')
+
+		const mainRootPath = vscode.Uri.file(
+			path.join(this._extensionPath, 'media')
 		);
-		const mainJSUri = webview.asWebviewUri(mainJSPath);
-		const mainCSSPath = vscode.Uri.file(
-			path.join(this._extensionPath, 'media', 'main.css')
-		);
-        const mainCSSUri = webview.asWebviewUri(mainCSSPath);
+		const mainRootUri = webview.asWebviewUri(mainRootPath);
 
 		return `<!DOCTYPE html>
             <html lang="en">
@@ -156,11 +151,18 @@ export class CodeTypingPanel {
             </head>
 			<body>
 				<h1>Coding is typing</h1>
+				<div>
+					<input type="button" id="play" value="start" />
+					<input type="button" id="pause" value="stop" />
+					<input type="button" id="reset" value="reset" />
+					<span id="status"></span>
+				</div>
+				<br />
                 <div id="container" style="width:800px;height:500px;border:1px solid grey"></div>
 			</body>
-			<link rel="stylesheet" type="text/css" href="${mainCSSUri}" >
+			<link rel="stylesheet" type="text/css" href="${mainRootUri}/main.css" >
 			<script src="${monacoLoaderUri}"></script>
-			<script src="${mainJSUri}"></script>
+			<script src="${mainRootUri}/main.js"></script>
             </html>`;
 	}
 }

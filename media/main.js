@@ -1,41 +1,51 @@
+
+var editor, curPos, curDecorations;
+var vscode, isCounting, charCount, durition;
+
 // This script will be run within the webview itself
 // It cannot access the main VS Code APIs directly.
 (function () {
-    const vscode = acquireVsCodeApi();
-    const oldState = vscode.getState();
+    vscode = acquireVsCodeApi();
+    let oldState = vscode.getState();
 	console.log('oldState:' + oldState);
 	// Handle messages sent from the extension to the webview
     window.addEventListener('message', event => {
 		const message = event.data; // The json data that the extension sent
-		console.log(message);
         switch (message.command) {
             case 'config':
-				let extensionUri = message.data.extensionUri;
-				let text = message.data.text;
-				let lang = message.data.lang;
+				let extensionUri = message.extensionUri;
+				let text = message.text;
+				let lang = message.lang;
 				init(extensionUri, text, lang);
 				break;
 		}
 	});
+	_resetCounting();
+	document.getElementById('play').addEventListener('click', _startCounting);
+	document.getElementById('pause').addEventListener('click', _stopCounting);
+	document.getElementById('reset').addEventListener('click', _resetCounting);
 }());
-
-var curPos, curDecorations;
-var isCounting = false, charCount, startTime;
 
 function init(extensionUri, text, lang) {
 	require.config({ paths: { 'vs': extensionUri + '/node_modules/monaco-editor/min/vs' }});
 	require(['vs/editor/editor.main'], function() {
-		let editor = monaco.editor.create(document.getElementById('container'), {
+		editor = monaco.editor.create(document.getElementById('container'), {
 			value: text,
 			language: lang
 		});
 		// disable backspace, tab
 		editor.addCommand(monaco.KeyCode.Backspace, ()=>{});
 		editor.addCommand(monaco.KeyCode.Tab, ()=>{});
+		editor.addCommand(monaco.KeyCode.Escape, () => {
+			if(isCounting){
+				_stopCounting();
+			} else {
+				_startCounting();
+			}
+		});
 		editor.onKeyDown((e) => {
 			e.preventDefault();
-			// console.log(e);
-			let newPos = _updatePos(e.browserEvent, _getTextLines(editor));
+			let newPos = _updatePos(e.browserEvent);
 			if(newPos){
 				editor.setPosition(newPos);
 				// display current position in center
@@ -44,21 +54,21 @@ function init(extensionUri, text, lang) {
 		});
 		editor.onDidChangeCursorPosition((e) => {
 			curPos = e.position;
-			_updateLine(editor);
+			_updateLine();
 		});
 		editor.focus();
 		curPos = { lineNumber: 1, column: 1 };
 		editor.setPosition(curPos);
-		_updateLine(editor);
+		_updateLine();
 	});
 }
 
-function _getTextLines(editor){
+function _getTextLines(){
 	return editor.getValue().split('\n');
 }
 
-function _updateLine(editor){
-	let textLines = _getTextLines(editor);
+function _updateLine(){
+	let textLines = _getTextLines();
 	let line = textLines[curPos.lineNumber - 1];
 	curDecorations = editor.deltaDecorations(curDecorations || [], [
 		{ 
@@ -75,20 +85,12 @@ function _updateLine(editor){
 	]);
 }
 
-function _updatePos(event, textLines){
+function _updatePos(event){
 	let key = event.key;
-	if(key === 'Escape'){
-		isCounting = !isCounting;
-		if(isCounting){
-			charCount = 0;
-			startTime = new Date();
-		}
-		setCounting();
-		return;
-	}
 	if(key === 'Tab'){
 		key = '\t';
 	}
+	let textLines = _getTextLines();
 	let curLine = textLines[curPos.lineNumber - 1];
 	let curKey = curLine[curPos.column - 1];
 	console.log(key + '_' + curKey + '_' + curLine);
@@ -108,6 +110,7 @@ function _updatePos(event, textLines){
 				nextLineNum++;
 			}
 			// ending
+			_stopCounting();
 			return { lineNumber: curPos.lineNumber, column: textLines[curPos.lineNumber - 1].length + 1 };
 		} else {
 			return { lineNumber: curPos.lineNumber, column: curPos.column + 1 };
@@ -131,14 +134,55 @@ function _updatePos(event, textLines){
 	return undefined;
 }
 
+function _startCounting(){
+	isCounting = true;
+	document.getElementById('play').style.display = 'none';
+	document.getElementById('pause').style.display = '';
+	_updateStatus();
+	setCounting();
+}
+
+function _stopCounting(){
+	isCounting = false;
+	document.getElementById('play').style.display = '';
+	document.getElementById('pause').style.display = 'none';
+	_updateStatus();
+}
+
+function _resetCounting(){
+	charCount = 0;
+	durition = 0;
+	isCounting = false;
+	document.getElementById('play').style.display = '';
+	document.getElementById('pause').style.display = 'none';
+	_updateStatus();
+}
+
+function _updateStatus(){
+	let secDurition = durition / 1000;
+	let speed = charCount / secDurition ;
+	let status = charCount + ' chars in ' 
+				+ secDurition.toFixed(2) + ' seconds with speed ' 
+				+ speed.toFixed(2) + ' c/s' ;
+	// show msg in status bar
+	document.getElementById('status').innerHTML = status;
+	// send msg to vscode
+	vscode.postMessage({
+		command: 'counting',
+		status: status,
+	});
+	if(editor){
+		editor.focus();
+		editor.setPosition(curPos);
+	}
+}
+
 function setCounting(){
 	if(isCounting){
 		setTimeout(()=>{
-			let now = new Date();
-			let durition = (now - startTime) / 1000 ; // seconds
-			console.log(charCount + ' in ' + durition + ' seconds');
-			// TODO: send msg to vscode
+			durition += 200;
+			_updateStatus();
 			setCounting();
-		}, 2000 /* ms */);
+		}, 100 /* ms */);
 	}
 }
