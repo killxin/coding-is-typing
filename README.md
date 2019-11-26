@@ -4,6 +4,12 @@ A vscode extension to help increasing the coding (or typing) speed.
 
 ## Install
 
+### From marketplace
+
+- Visit [here](https://marketplace.visualstudio.com/items?itemName=rhjiang.coding-is-typing) or search `Coding is typing` in vscode marketplace
+
+### From VSIX
+
 - Download the `coding-is-typing-*.vsix` package [here](https://github.com/killxin/coding-is-typing/releases)
 - Open vscode extensions (shift + ctrl + x)
 - Click `...` on the right corner of the side bar and select `install from VSIX...`
