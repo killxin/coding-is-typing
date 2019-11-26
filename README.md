@@ -7,9 +7,7 @@ A vscode extension to help increasing the coding (or typing) speed.
 - Download the `coding-is-typing-*.vsix` package [here](https://github.com/killxin/coding-is-typing/releases)
 - Open vscode extensions (shift + ctrl + x)
 - Click `...` on the right corner of the side bar and select `install from VSIX...`
-- Select the `coding-is-typing-*.vsix package` to install
-
-![install](media/install.png)
+- Select the `coding-is-typing-*.vsix` package to install
 
 ## Usage
 
