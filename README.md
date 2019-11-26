@@ -32,5 +32,4 @@ A vscode extension to help increasing the coding (or typing) speed.
 - `npm install`
 - `npm run watch` or `npm run compile`
 - `F5` to start debugging
-
-Run the `Coding is typing: Enable codeTyping` to create the webview.
+- Run the `Coding is typing: Enable codeTyping`

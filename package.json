@@ -11,6 +11,7 @@
 	"categories": [
 		"Other"
 	],
+	"icon": "media/icon.png",
 	"activationEvents": [
 		"onCommand:codeTyping.start"
 	],
