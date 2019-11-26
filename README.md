@@ -2,16 +2,25 @@
 
 A vscode extension to help increasing the coding (or typing) speed.
 
+## Install
+
+- Download the `coding-is-typing-*.vsix` package [here](https://github.com/killxin/coding-is-typing/releases)
+- Open vscode extensions (shift + ctrl + x)
+- Click `...` on the right corner of the side bar and select `install from VSIX...`
+- Select the `coding-is-typing-*.vsix package` to install
+
+![install](media/install.png)
+
 ## Usage
 
-- Opening the document you want to type in vscode
-- Entering `F1` and select `Coding is typing: Enable codeTyping`
-- Typing to cover the red text
-- Clicking `start`, `stop`, `reset` buttons to control the speed monitor
+- Open a document as the active editor in vscode
+- Press `F1` and select `Coding is typing: Enable codeTyping`
+- Type to cover the red text
+- Click `start`, `stop`, `reset` buttons to control the speed monitor
 
 ## Demo
 
-![demo](demo.gif)
+![demo](media/demo.gif)
 
 ## Build from source
 

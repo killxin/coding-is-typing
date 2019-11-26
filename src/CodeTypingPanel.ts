@@ -132,10 +132,10 @@ export class CodeTypingPanel {
 		);
 		const monacoLoaderUri = webview.asWebviewUri(monacoLoaderPath);
 
-		const mainRootPath = vscode.Uri.file(
+		const mediaPath = vscode.Uri.file(
 			path.join(this._extensionPath, 'media')
 		);
-		const mainRootUri = webview.asWebviewUri(mainRootPath);
+		const mediaRootUri = webview.asWebviewUri(mediaPath);
 
 		return `<!DOCTYPE html>
             <html lang="en">
@@ -145,7 +145,7 @@ export class CodeTypingPanel {
                 Use a content security policy to only allow loading images from https or from our extension directory,
 				and only allow scripts that have a specific nonce.
 				-->
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} data: file: https:; script-src ${webview.cspSource} data: file:; style-src 'unsafe-inline' ${webview.cspSource} data: file: https:;">
+				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} data: file: https:; script-src ${webview.cspSource} data: file: https:; style-src 'unsafe-inline' ${webview.cspSource} data: file: https:;">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>${appTitle}</title>
             </head>
@@ -160,9 +160,9 @@ export class CodeTypingPanel {
 				<br />
                 <div id="container" style="width:800px;height:500px;border:1px solid grey"></div>
 			</body>
-			<link rel="stylesheet" type="text/css" href="${mainRootUri}/main.css" >
+			<link rel="stylesheet" type="text/css" href="${mediaRootUri}/main.css" >
 			<script src="${monacoLoaderUri}"></script>
-			<script src="${mainRootUri}/main.js"></script>
+			<script src="${mediaRootUri}/main.js"></script>
             </html>`;
 	}
 }

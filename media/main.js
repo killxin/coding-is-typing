@@ -6,8 +6,6 @@ var vscode, isCounting, charCount, durition;
 // It cannot access the main VS Code APIs directly.
 (function () {
     vscode = acquireVsCodeApi();
-    let oldState = vscode.getState();
-	console.log('oldState:' + oldState);
 	// Handle messages sent from the extension to the webview
     window.addEventListener('message', event => {
 		const message = event.data; // The json data that the extension sent
@@ -20,10 +18,10 @@ var vscode, isCounting, charCount, durition;
 				break;
 		}
 	});
-	_resetCounting();
 	document.getElementById('play').addEventListener('click', _startCounting);
 	document.getElementById('pause').addEventListener('click', _stopCounting);
 	document.getElementById('reset').addEventListener('click', _resetCounting);
+	_resetCounting();
 }());
 
 function init(extensionUri, text, lang) {
@@ -150,9 +148,9 @@ function _stopCounting(){
 }
 
 function _resetCounting(){
+	isCounting = false;
 	charCount = 0;
 	durition = 0;
-	isCounting = false;
 	document.getElementById('play').style.display = '';
 	document.getElementById('pause').style.display = 'none';
 	_updateStatus();

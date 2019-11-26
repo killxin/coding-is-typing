@@ -2,7 +2,7 @@
 	"name": "coding-is-typing",
 	"displayName": "Coding is typing",
 	"description": "learn something by typing it",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"publisher": "rhjiang",
 	"repository": "https://github.com/killxin/coding-is-typing",
 	"engines": {
@@ -40,8 +40,9 @@
 		"mocha": "^6.2.2",
 		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
-		"vscode-test": "^1.2.2",
-		"monaco-editor": "^0.18.1"
+		"vscode-test": "^1.2.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"monaco-editor": "^0.18.1"
+	}
 }
