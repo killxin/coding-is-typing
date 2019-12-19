@@ -92,9 +92,10 @@ function _updatePos(event){
 	let curLine = textLines[curPos.lineNumber - 1];
 	let curKey = curLine[curPos.column - 1];
 	console.log(key + '_' + curKey + '_' + curLine);
-	if(key === curKey) {
-		if(isCounting) charCount++;
-		if(curPos.column === curLine.length) {
+	// skip to the next line when typing Enter
+	if(key === curKey || key  === 'Enter') {
+		if(isCounting && key  !== 'Enter') charCount++;
+		if(curPos.column === curLine.length || key === 'Enter') {
 			let nextLineNum = curPos.lineNumber + 1;
 			let nextLine;
 			while(nextLineNum <= textLines.length) {
