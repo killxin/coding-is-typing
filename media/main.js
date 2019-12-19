@@ -29,7 +29,13 @@ function init(extensionUri, text, lang) {
 	require(['vs/editor/editor.main'], function() {
 		editor = monaco.editor.create(document.getElementById('container'), {
 			value: text,
-			language: lang
+			language: lang,
+			wordWrap: 'wordWrapColumn',
+			wordWrapColumn: 80,
+			// Set this to false to not auto word wrap minified files
+			wordWrapMinified: true,
+			// try "same", "indent" or "none"
+			wrappingIndent: "indent"
 		});
 		// disable backspace, tab
 		editor.addCommand(monaco.KeyCode.Backspace, ()=>{});

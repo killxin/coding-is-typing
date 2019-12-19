@@ -45,6 +45,6 @@
 	},
 	"dependencies": {
 		"monaco-editor": "^0.18.1",
-		"typewriter-noises": "git+https://github.com/timmyreilly/TypewriterNoises-VSCode.git"
+		"play-sound": "0.0.7"
 	}
 }
