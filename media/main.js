@@ -96,6 +96,7 @@ function _updatePos(event){
 	if(key === curKey || key  === 'Enter') {
 		if(isCounting && key  !== 'Enter') charCount++;
 		if(curPos.column === curLine.length || key === 'Enter') {
+			_sendNoises("enterNoise");
 			let nextLineNum = curPos.lineNumber + 1;
 			let nextLine;
 			while(nextLineNum <= textLines.length) {
@@ -112,9 +113,11 @@ function _updatePos(event){
 			_stopCounting();
 			return { lineNumber: curPos.lineNumber, column: textLines[curPos.lineNumber - 1].length + 1 };
 		} else {
+			_sendNoises("keyNoise");
 			return { lineNumber: curPos.lineNumber, column: curPos.column + 1 };
 		}
 	} else if(key === 'Backspace') {
+		_sendNoises("backNoise");
 		if(curPos.column === 1) {
 			let nextLineNum = curPos.lineNumber - 1;
 			let nextLine;
@@ -183,5 +186,13 @@ function setCounting(){
 			_updateStatus();
 			setCounting();
 		}, 100 /* ms */);
+	}
+}
+
+function _sendNoises(msg) {
+	if(document.getElementById('sound').checked){
+		vscode.postMessage({
+			command: msg,
+		});
 	}
 }

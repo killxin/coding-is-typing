@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { appName, appTitle } from './extension';
+var player = require('play-sound')({});
 
 /**
  * Manages codeTyping webview panels
@@ -10,7 +11,6 @@ export class CodeTypingPanel {
 	 * Track the currently panel. Only allow a single panel to exist at a time.
 	 */
 	public static currentPanel: CodeTypingPanel | undefined;
-
 	public static readonly viewType = appName + '.view';
 
 	private readonly _panel: vscode.WebviewPanel;
@@ -76,6 +76,18 @@ export class CodeTypingPanel {
 					case 'counting':
 						let status = message.status;
 						vscode.window.setStatusBarMessage(status);
+						return;
+					case 'keyNoise':
+						let keypress_path = path.join(this._extensionPath, 'media', 'audio', 'key.mp3');
+						player.play(keypress_path);
+						return;
+					case 'backNoise':
+						let backpress_path = path.join(this._extensionPath, 'media', 'audio', 'back.mp3');
+						player.play(backpress_path);
+						return;
+					case 'enterNoise':
+						let enterpress_path = path.join(this._extensionPath, 'media', 'audio', 'enter.mp3');
+						player.play(enterpress_path);
 						return;
 				}
 			},
@@ -152,6 +164,7 @@ export class CodeTypingPanel {
 			<body>
 				<h1>Coding is typing</h1>
 				<div>
+					<input type="checkbox" id="sound">sound</input>
 					<input type="button" id="play" value="start" />
 					<input type="button" id="pause" value="stop" />
 					<input type="button" id="reset" value="reset" />

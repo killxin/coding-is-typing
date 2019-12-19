@@ -10,3 +10,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Load the active editor content to webview
 - Typing to make the red text normal
 - Monitoring the typing speed
+
+## 
